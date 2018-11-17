@@ -15,8 +15,7 @@ module.exports = class ImageSearchAPI {
 
         let request_params = {
             method: 'GET',
-            hostname: this.host,
-            path: url + '?q=' + encodeURIComponent(search),
+            host: this.url + '?q=' + encodeURIComponent(search),
             headers: {
                 'Ocp-Apim-Subscription-Key': this.subscriptionKey,
             }

@@ -20,12 +20,15 @@ app.get('/test', (req, res) => {
 })
 
 app.get('/get1Image/:name', (req, res) => {
+  const is=new ImageSearchAPI(azureCreds.bing.Endpoint, azureCreds.bing.Key1);
+  const imageData = is.getImage(req.params.name);
+
+  console.log(imageData);
+  
   res.send(
-    [{
-      parameters: req.params.name
-      
-    }]
+      imageData    
   )
+
 })
 
 
