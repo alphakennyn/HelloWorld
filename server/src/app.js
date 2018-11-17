@@ -9,7 +9,6 @@ const azureCreds =  require('../config/azureCredentials.json');
  */
 const KeyPhrase = require('./intentAPI');
 
-const kp = new KeyPhrase(azureCreds.TextAnalytics.Endpoint, azureCreds.TextAnalytics.Key1);
 
 const app = express()
 app.use(morgan('combined'))
@@ -31,8 +30,10 @@ app.get('/test', (req, res) => {
 
 app.get('/intent', (req, res) => {
   const text = req.body.text
-  const result = kp.get_key_phrases(text);
+  const kp = new KeyPhrase(azureCreds.TextAnalytics.Endpoint, azureCreds.TextAnalytics.Key1);
 
+  const result = kp.get_key_phrases(text);
+  console.log(result);
   res.send({
     data: result,
   });
