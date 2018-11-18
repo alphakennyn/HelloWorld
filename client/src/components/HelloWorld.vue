@@ -10,11 +10,6 @@ import request from '../api/requests.js';
 
 export default {
   name: 'HelloWorld',
-  data() {
-    return {
-      data: {}
-    }
-  },
   props: {
     msg: String
   },
@@ -22,7 +17,7 @@ export default {
     request.getSample().then(res => {
       this.data = res.data;
     }).catch(err => {
-      alert('uh oh');
+      
     })
   }
 }

@@ -1,24 +1,33 @@
 <template>
   <div>
-    <!-- <img id = "logo" alt="Montreal logo" src="../assets/Montreal.png"> -->
+    <div id = "chatContainer">
     <ul class="chat-thread">
 	<li>Are we meeting today?</li>
 	<li>yes, what time suits you?</li>
 	<li>I was thinking after lunch, I have a meeting in the morning</li>
-</ul>
-
+</ul> 
+    
+</div>
 <form class="chat-window">
 	<input class="chat-window-message" name="chat-window-message" type="text" autocomplete="off" autofocus />
 </form>
+
+<loading-u-i></loading-u-i>
+
+
   </div>
 </template>
 
 <script>
 
+import LoadingUI from './LoadingUI'
+
+
 export default {
   name: 'chat',
   components: {
-    // layout
+     LoadingUI,
+   
   }
 }
 </script>
@@ -34,6 +43,12 @@ body {
   background: -webkit-linear-gradient(-45deg, #183850 0, #183850 25%, #192C46 50%, #22254C 75%, #22254C 100%);
   background-repeat: no-repeat;
   background-attachment: fixed;
+}
+
+#chatContainer{
+    margin-top:25%;
+    background: rgba(187, 186, 196, 0.9);
+    border:2px solid rgb(169, 169, 199);
 }
 
 ::-webkit-scrollbar {
@@ -66,7 +81,7 @@ body {
   margin: 0 0 20px 0;
   font: 16px/20px 'Noto Sans', sans-serif;
   border-radius: 10px;
-  background-color: rgba(25, 147, 147, 0.2);
+  background-color: rgba(110, 95, 95, 0.589);
 }
 
 /* Chat - Avatar */
@@ -86,7 +101,7 @@ body {
   content: '';
   width: 0;
   height: 0;
-  border-top: 15px solid rgba(25, 147, 147, 0.2);
+  border-top: 15px solid rgba(0, 2, 2, 0.2);
 }
 
 .chat-thread li:nth-child(odd) {
@@ -95,7 +110,7 @@ body {
   -webkit-animation: show-chat-odd 0.15s 1 ease-in;
   float: right;
   margin-right: 80px;
-  color: #0AD5C1;
+  color: rgb(207, 204, 22);
 }
 
 .chat-thread li:nth-child(odd):before {
@@ -114,7 +129,7 @@ body {
   -webkit-animation: show-chat-even 0.15s 1 ease-in;
   float: left;
   margin-left: 80px;
-  color: #0EC879;
+  color: rgb(54, 226, 19);
 }
 
 .chat-thread li:nth-child(even):before {

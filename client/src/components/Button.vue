@@ -1,6 +1,10 @@
 <template>
   <div id = "button">
-     <button><img id = 'icon' src = "../assets/chat1.png"/></button>
+    <router-link to ="/chat">
+     <button>
+       <img id = 'icon' src = "../assets/chat1.png"/>
+       </button>
+     </router-link>
   </div>
 </template>
 
