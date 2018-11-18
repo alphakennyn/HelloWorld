@@ -1,51 +1,38 @@
 'use strict';
+const translationKey = require('../config/translation');
+const axios = require('axios');
 
-const https = require('https');
+const baseURL = translationKey.translate.Endpoint;
 
-module.exports = class PhraseAnalyzer {
-    constructor(text, language) {
-        this.text = text;
-        this.language = language;
+module.exports = class Translator {
+    constructor(langFrom, langTo, key) {
+        this. subscriptionKey = key;
+        this.langFrom = langFrom;
+        this.langTo = langTo;
+        this.lang = this.langFrom + '-' + this.langTo;
+    }
+    setSubscriptionKey(key) {
+        this.subscriptionKey = key;
+    }
+    setFrom(langFrom){
+        this.langFrom = langFrom;
+    }
+    setTo(langTo){
+        this.langTo = langTo;
     }
 
-    response_handler(response) {
-        let body = '';
-        response.on('data', function (d) {
-            body += d;
-        });
-        response.on('end', function () {
-            let body_ = JSON.parse(body);
-            let body__ = JSON.stringify(body_, null, '  ');
-            console.log(body__);
-        });
-        response.on('error', function (e) {
-            console.log('Error: ' + e.message);
-        });
-    };
+   async get(text) {
 
-    get_key_phrases(text) {
+        return await axios.get(baseURL + '?key=' + this.subscriptionKey + '&text=' + text + '&lang=' + this.lang)
+            .then((res) => {
+                return res.data.text[0]
+            })
+            .catch((error) => {
+                console.error(error)
+            })
 
-        const documents = [
-            {
-                language: "en",
-                id: "1",
-                text,
-            },
-        ];
-
-        const body = JSON.stringify({ documents });
-
-        const request_params = {
-            method: 'POST',
-            host: `${this.url}/v2.0/keyPhrases`,
-            //path : path,
-            headers: {
-                'Ocp-Apim-Subscription-Key': this.accessKey,
-            }
-        };
-
-        let req = https.request(request_params, this.response_handler);
-        req.write(body);
-        req.end();
     }
 }
+
+
+
