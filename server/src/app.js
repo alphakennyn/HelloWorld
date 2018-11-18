@@ -17,9 +17,8 @@ app.use(bodyParser.json())
 app.use(cors())
 
 
-/**
- * /test
- */
+const translator = require('./parser')
+
 app.get('/test', (req, res) => {
   res.send(
     [{
@@ -29,19 +28,14 @@ app.get('/test', (req, res) => {
   )
 })
 
-app.get('/intent', (req, res) => {
-  const text = req.body.text
-  const result = kp.get_key_phrases(text);
 
-  res.send({
-    data: result,
-  });
-  // res.send(
-  //   [{
-  //     title: "Hello World!",
-  //     description: "Hi there! How are you?"
-  //   }]
-  // )
-})
+app.post('/translate', (req, res) => {
+   // res.send(translate)
+    console.log(translator.translate.get(req.body.data))
+
+    translator.translate.get(req.body.data).then(result =>{
+       res.send(result)
+    })
+
 
 app.listen(process.env.PORT || 8081)
