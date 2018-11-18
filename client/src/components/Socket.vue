@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
     <h1>Hello from socket</h1>
+    <div>Current Language: {{language}}</div>
     {{messages}}
     <input v-model="message"/>
     <button @click='sendMessage()'>Submit</button>
@@ -17,6 +18,7 @@ export default {
     return {
       user: '',
       message: '',
+      language: 'en',
       messages: [],
       messagesTest: '',
       socket : io(url.api)
@@ -30,11 +32,10 @@ export default {
       console.log('chat updated...');
       this.messages = [...this.messages, (`${username}:  ${data}`)];
     });
-    // this.socket.on('MESSAGE', (data) => {
-    //   console.log('MESSSAGE is called')
-    //         this.messages = [...this.messages, data];
-    //         // you can also do this.messages.push(data)
-    // });
+    this.socket.on('languageSwap', (data) => {
+      console.log('swapping language')
+      this.language = data;
+    });
   },
   methods: {
         sendMessage(e) {

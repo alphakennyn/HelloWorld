@@ -16,22 +16,28 @@ app.use(bodyParser.json())
 app.use(cors())
 
 
-const translator = require('./parser')
+const parseTool = require('./parser')
 
 app.get('/test', (req, res) => {
-  res.send(
-    [{
-      title: "Hello World!",
-      description: "Hi there! How are you?"
-    }]
-  )
+  console.log(req.body.data);
+  parseTool.phraseAnalyze.getLanguage(req.body.data).then((result) => {
+    const language = result.documents[0].detectedLanguages[0];
+    const data = {
+      value: 'en',
+      score: language.score,
+    }
+    if (language.score >= 0.90) {
+      data.value = language.iso6391Name;
+    }
+    console.log(data);
+    res.send(data);
+  }).catch(err => {
+    res.send('Uh oh');
+  });
 })
 
 app.post('/translate', (req, res) => {
-  // res.send(translate)
-   console.log(translator.translate.get(req.body.data))
-
-   translator.translate.get(req.body.data).then(result =>{
+   parseTool.translate.get(req.body.data).then(result =>{
       res.send(result)
    })
 });
@@ -53,11 +59,10 @@ io.on('connection', function (socket) {
 
   // when the client emits 'adduser', this listens and executes
   socket.on('adduser', (username) => {
-    console.log('new user', username);
-    // store the username in the socket session for this client
-    socket.username = username;
-    // store the room name in the socket session for this client
-    socket.room = 'lobby';
+    socket.username = username;// store the username in the socket session for this client
+    socket.room = 'lobby';// store the room name in the socket session for this client
+    socket.language = 'en';// store current user pref language to english
+
     // add the client's username to the global list
     usernames[username] = username;
     // send client to room 1
@@ -70,6 +75,17 @@ io.on('connection', function (socket) {
   });
   // when the client emits 'sendchat', this listens and executes
   socket.on('sendchat', (data) => {
+    console.log(socket.username, ' sent something',data);
+    //update their language
+    parseTool.phraseAnalyze.getLanguage(data).then((result) => {
+      const language = result.documents[0].detectedLanguages[0];
+      console.log(socket.username, language.iso6391Name)
+      
+      if (language.score && language.score >= 0.90 && socket.language !== language.iso6391Name) {
+        console.log('swapping language for', socket.username)
+        io.to(`${socket.id}`).emit('languageSwap', language.iso6391Name);
+      }
+    });
     // we tell the client to execute 'updatechat' with 2 parameters
     io.sockets.in(socket.room).emit('updatechat', socket.username, data);
   });
