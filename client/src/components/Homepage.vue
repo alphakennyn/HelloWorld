@@ -3,9 +3,9 @@
      <HelloWorld msg="Montreal refugee"/>
     <img id = "logo" alt="Montreal logo" src="../assets/Montreal.png">
     <Button></Button>
+   
   </div>
 </template>
-
 <script>
 
 import HelloWorld from './HelloWorld.vue'
@@ -18,7 +18,8 @@ export default {
       HelloWorld,
       Button
     // layout
-  }
+  },
+
 }
 </script>
 
@@ -26,7 +27,7 @@ export default {
 
 @media only screen and (max-width: 600px){
     #app{
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -38,7 +39,6 @@ export default {
   box-shadow: 5px 10px #314455;
   background: rgba(0,0,0,0.1);
     }
-
 }
 /* #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
