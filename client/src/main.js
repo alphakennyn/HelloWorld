@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue'
 import Homepage from './components/Homepage.vue'
-import chat from './components/chat.vue'
+import chatBox from './components/chatBox.vue'
 import Socket from './components/Socket.vue'
 import { VueSpinners } from '@saeris/vue-spinners'
 
@@ -15,7 +15,7 @@ Vue.use(VueRouter)
 
 const routes = [
   { path: '/', component: Homepage },
-  { path: '/chat', component: chat },
+  { path: '/chat', component: chatBox },
   { path: '/sock', component: Socket }
 ];
 

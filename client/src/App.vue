@@ -27,5 +27,8 @@ export default {
 	z-index: 0;
     }
 }
+  body {
+    margin: 0px;
+  }
 
 </style>

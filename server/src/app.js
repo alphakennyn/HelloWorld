@@ -2,8 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
-const azureCreds = require('../config/azureCredentials.json');
-
+const uuid = require('uuid/v1');
 /**
  * List your APIs here..
  */
@@ -39,8 +38,13 @@ app.get('/test', (req, res) => {
 app.post('/translate', (req, res) => {
    parseTool.translate.get(req.body.data).then(result =>{
       res.send(result)
-   })
+   });
 });
+
+app.get('/sessions', (req,res) => {
+  console.log(io.sockets.clients().sockets);
+  res.send();
+})
 
 const server = app.listen(process.env.PORT || 8081, () => {
   console.log('server started on 8081 :)');
@@ -52,44 +56,64 @@ const io = require('socket.io')(server);
  * List of users
  */
 const usernames = {};
-const rooms = ['lobby', 'room1', 'room2', 'room3'];
-
+const rooms = ['room1', 'room2', 'room3', 'room4', 'room5'];
+let freeRoomIndex = 0;
 io.on('connection', function (socket) {
   console.log('a user connected', socket.id);
 
   // when the client emits 'adduser', this listens and executes
-  socket.on('adduser', (username) => {
-    socket.username = username;// store the username in the socket session for this client
-    socket.room = 'lobby';// store the room name in the socket session for this client
-    socket.language = 'en';// store current user pref language to english
+  socket.on('adduser', (data) => {
 
-    // add the client's username to the global list
-    usernames[username] = username;
-    // send client to room 1
-    socket.join('lobby');
-    // echo to client they've connected
-    socket.emit('updatechat', 'SERVER', `${username} have connected to lobby`);
-    // echo to room 1 that a person has connected to their room
-    socket.broadcast.to('lobby').emit('updatechat', 'SERVER', username + ' has connected to this room');
-    socket.emit('updaterooms', rooms, 'lobby');
+    if (data) {
+      socket.userId = uuid();// store the username in the socket session for this client
+      socket.room = rooms[freeRoomIndex];// store the room name in the socket session for this client
+      socket.language = 'en';// store current user pref language to english
+      parseTool.translate.setTo(socket.language);
+  
+      // add the client's username to the global list
+      usernames[socket.id] = socket.id;
+      // send client to room 1
+      socket.join(rooms[freeRoomIndex]);
+      // echo to room 1 that a person has connected to their room
+      console.log(rooms[freeRoomIndex]);
+  
+
+      //socket.emit('updaterooms', rooms, 'room1');
+      // freeRoomIndex += 1;
+    } else {
+      console.log('bot joined!')
+      /**
+       * Protocol
+       */
+      socket.emit('updatechat', 'SERVER', `Welcome, I am the  Montreal bot. You can speak to me in French, Spanish... `);
+      socket.emit('updatechat', 'SERVER', `Just type the service you'd like discuss and I'll find the next available representative to chat with you :)`);
+    }
   });
+
   // when the client emits 'sendchat', this listens and executes
   socket.on('sendchat', (data) => {
-    console.log(socket.username, ' sent something',data);
-    //update their language
+    //update their language if need be
+    console.log('From ',socket.room, socket.userId, ' just sent ', data);
     parseTool.phraseAnalyze.getLanguage(data).then((result) => {
       const language = result.documents[0].detectedLanguages[0];
-      console.log(socket.username, language.iso6391Name)
       
       if (language.score && language.score >= 0.90 && socket.language !== language.iso6391Name) {
-        console.log('swapping language for', socket.username)
-        io.to(`${socket.id}`).emit('languageSwap', language.iso6391Name);
+        socket.language = language.iso6391Name;
+        parseTool.translate.setTo(language.iso6391Name);
+        socket.to(socket.room).emit('languageSwap', language.iso6391Name);
       }
+    }).then(() => {
+      console.log('done');
     });
+    console.log('sockt room is', socket.room);
+
+    io.in(socket.room).emit('updatechat', socket.userId, data);
     // we tell the client to execute 'updatechat' with 2 parameters
-    io.sockets.in(socket.room).emit('updatechat', socket.username, data);
+    // io.sockets.in(socket.room).emit('updatechat', socket.userId, data);
   });
 
+
+  
   // When client switches room
   socket.on('switchRoom', (newroom) => {
     // leave the current room (stored in session)
@@ -102,7 +126,7 @@ io.on('connection', function (socket) {
     // update socket session room title
     socket.room = newroom;
     socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username + ' has joined this room');
-    socket.emit('updaterooms', rooms, newroom);
+    //socket.emit('updaterooms', rooms, newroom);
   });
 
   // when the user disconnects.. perform this
