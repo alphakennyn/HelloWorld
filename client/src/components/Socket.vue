@@ -9,6 +9,7 @@
 
 <script>
 import io from 'socket.io-client';
+import url from '../config/url.json';
 
 export default {
   name: 'HelloWorld',
@@ -18,7 +19,7 @@ export default {
       message: '',
       messages: [],
       messagesTest: '',
-      socket : io('localhost:8081')
+      socket : io(url.api)
     }
   },
   mounted: function() {
