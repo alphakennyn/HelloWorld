@@ -1,5 +1,5 @@
 # HelloWorld
-Chat room that has live traslation integrated based on user's inputed messages
+Chat room that includes live text translation integrated based on user's inputed messages. Built for BlocHack2018
 
 Incorperates
   - Microsoft Text Analysis API
