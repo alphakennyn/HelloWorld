@@ -7,6 +7,7 @@ import { VueSpinners } from '@saeris/vue-spinners'
 
 Vue.use(VueSpinners)
 
+import vueResource from 'vue-resource';
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
@@ -20,6 +21,8 @@ const router = new VueRouter({
   routes,
   mode: 'history'
 });
+
+Vue.use(vueResource)
 
 new Vue({
   router,
