@@ -11,13 +11,13 @@
 <script>
 
 export default {
-  name: 'button',
+  name: 'Button',
   components: {
   }
 }
 </script>
 
-<style>
+<style scoped>
 
   @import url(https://fonts.googleapis.com/css?family=Raleway:300);
 button {

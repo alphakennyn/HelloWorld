@@ -2,26 +2,18 @@
   <div>
     <div id = "chatContainer">
     <ul class="chat-thread">
-	<li>Are we meeting today?</li>
-	<li>yes, what time suits you?</li>
-	<li>I was thinking after lunch, I have a meeting in the morning</li>
-</ul> 
-    
-</div>
-<form class="chat-window">
-	<input class="chat-window-message" name="chat-window-message" type="text" autocomplete="off" autofocus />
-</form>
-
+      <li>Are we meeting today?</li>
+      <li>yes, what time suits you?</li>
+      <li>I was thinking after lunch, I have a meeting in the morning</li>
+    </ul> 
+  </div>
 <loading-u-i></loading-u-i>
-
-
   </div>
 </template>
 
 <script>
 
 import LoadingUI from './LoadingUI'
-
 
 export default {
   name: 'chat',

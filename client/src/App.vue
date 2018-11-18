@@ -1,14 +1,10 @@
 <template>
   <div id = "bj">
-     <router-view>
-     </router-view>
+     <router-view></router-view>
   </div>
 </template>
 
 <script>
-
-
-
 export default {
   name: "app",
   components: {
@@ -31,5 +27,8 @@ export default {
 	z-index: 0;
     }
 }
+  body {
+    margin: 0px;
+  }
 
 </style>

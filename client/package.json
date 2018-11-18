@@ -10,6 +10,7 @@
   "dependencies": {
     "@saeris/vue-spinners": "^1.0.8",
     "axios": "^0.18.0",
+    "socket.io-client": "^2.1.1",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vue-sidebar-menu": "^2.1.0",
