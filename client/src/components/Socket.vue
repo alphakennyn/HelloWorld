@@ -3,7 +3,7 @@
     <h1>Hello from socket</h1>
     {{messages}}
     <input v-model="message"/>
-    <button @click='sendMessage()'>Submit</button>?
+    <button @click='sendMessage()'>Submit</button>
   </div>
 </template>
 

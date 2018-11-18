@@ -41,7 +41,7 @@ module.exports = class PhraseAnalyzer {
         const request_params = {
             method: 'POST',
             host: `${this.url}/v2.0/keyPhrases`,
-            Host: westus.api.cognitive.microsoft.com
+            Host: westus.api.cognitive.microsoft.com,
             //path : path,
             headers: {
                 'Ocp-Apim-Subscription-Key': this.accessKey,

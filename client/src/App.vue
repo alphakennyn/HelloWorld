@@ -1,20 +1,16 @@
 <template>
   <div id = "bj">
-    <Socket/>
      <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import Socket from './components/Socket';
 
 export default {
   name: 'app',
-  components: {
-    HelloWorld,
-    Socket,
-  }
+  // components: {
+  //   HelloWorld,
+  // }
 }
 </script>
 
