@@ -16,9 +16,8 @@ app.use(bodyParser.json())
 app.use(cors())
 
 
-/**
- * /test
- */
+const translator = require('./parser')
+
 app.get('/test', (req, res) => {
   res.send(
     [{
@@ -27,6 +26,15 @@ app.get('/test', (req, res) => {
     }]
   )
 })
+
+app.post('/translate', (req, res) => {
+  // res.send(translate)
+   console.log(translator.translate.get(req.body.data))
+
+   translator.translate.get(req.body.data).then(result =>{
+      res.send(result)
+   })
+});
 
 const server = app.listen(process.env.PORT || 8081, () => {
   console.log('server started on 8081 :)');
@@ -60,7 +68,6 @@ io.on('connection', function (socket) {
     socket.broadcast.to('lobby').emit('updatechat', 'SERVER', username + ' has connected to this room');
     socket.emit('updaterooms', rooms, 'lobby');
   });
-
   // when the client emits 'sendchat', this listens and executes
   socket.on('sendchat', (data) => {
     // we tell the client to execute 'updatechat' with 2 parameters

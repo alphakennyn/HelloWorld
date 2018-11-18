@@ -4,6 +4,7 @@ import App from './App.vue'
 import Homepage from './components/Homepage.vue'
 import chat from './components/chat.vue'
 import Socket from './components/Socket.vue'
+import vueResource from 'vue-resource';
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
@@ -18,6 +19,8 @@ const router = new VueRouter({
   routes,
   mode: 'history'
 });
+
+Vue.use(vueResource)
 
 new Vue({
   router,
